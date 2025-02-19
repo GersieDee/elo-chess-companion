@@ -4,20 +4,38 @@ import { v4 as uuidv4 } from "uuid";
 import NewPlayerForm from "@/components/NewPlayerForm";
 import PlayersList from "@/components/PlayersList";
 import MatchRecordForm from "@/components/MatchRecordForm";
-import { processMatch, type Player, type Match } from "@/utils/eloCalculator";
+import EventSelector from "@/components/EventSelector";
+import { processMatch, type Player, type Match, type Event } from "@/utils/eloCalculator";
 
 const Index = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [activeEventId, setActiveEventId] = useState<string | null>(null);
 
   const handleAddPlayer = (name: string) => {
     const newPlayer: Player = {
       id: uuidv4(),
       name,
-      rating: 1200, // Starting ELO rating
+      rating: 1200,
       matches: 0,
     };
     setPlayers([...players, newPlayer]);
+  };
+
+  const handleCreateEvent = (name: string) => {
+    const newEvent: Event = {
+      id: uuidv4(),
+      name,
+      date: new Date().toISOString(),
+      isActive: true,
+    };
+    setEvents([...events, newEvent]);
+    setActiveEventId(newEvent.id);
+  };
+
+  const handleSelectEvent = (eventId: string) => {
+    setActiveEventId(eventId);
   };
 
   const handleRecordMatch = (matchData: Omit<Match, "id" | "date">) => {
@@ -50,8 +68,18 @@ const Index = () => {
 
         <div className="grid gap-8 md:grid-cols-2">
           <div className="space-y-8">
+            <EventSelector
+              events={events}
+              activeEventId={activeEventId}
+              onEventCreate={handleCreateEvent}
+              onEventSelect={handleSelectEvent}
+            />
             <NewPlayerForm onPlayerAdd={handleAddPlayer} />
-            <MatchRecordForm players={players} onMatchRecord={handleRecordMatch} />
+            <MatchRecordForm 
+              players={players} 
+              onMatchRecord={handleRecordMatch}
+              activeEventId={activeEventId}
+            />
           </div>
           <PlayersList players={players} />
         </div>

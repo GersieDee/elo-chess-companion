@@ -6,12 +6,20 @@ export interface Player {
   matches: number;
 }
 
+export interface Event {
+  id: string;
+  name: string;
+  date: string;
+  isActive: boolean;
+}
+
 export interface Match {
   id: string;
   date: string;
   whiteId: string;
   blackId: string;
   result: "white" | "black" | "draw";
+  eventId: string;
 }
 
 const K_FACTOR = 32;

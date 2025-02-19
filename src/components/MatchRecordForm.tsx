@@ -21,9 +21,10 @@ import type { Player, Match } from "@/utils/eloCalculator";
 interface MatchRecordFormProps {
   players: Player[];
   onMatchRecord: (match: Omit<Match, "id" | "date">) => void;
+  activeEventId: string | null;
 }
 
-const MatchRecordForm = ({ players, onMatchRecord }: MatchRecordFormProps) => {
+const MatchRecordForm = ({ players, onMatchRecord, activeEventId }: MatchRecordFormProps) => {
   const [whiteId, setWhiteId] = useState<string>("");
   const [blackId, setBlackId] = useState<string>("");
   const [result, setResult] = useState<"white" | "black" | "draw">("white");
@@ -31,6 +32,11 @@ const MatchRecordForm = ({ players, onMatchRecord }: MatchRecordFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!activeEventId) {
+      toast.error("Please select an active event first");
+      return;
+    }
+
     if (!whiteId || !blackId) {
       toast.error("Please select both players");
       return;
@@ -45,6 +51,7 @@ const MatchRecordForm = ({ players, onMatchRecord }: MatchRecordFormProps) => {
       whiteId,
       blackId,
       result,
+      eventId: activeEventId,
     });
 
     setWhiteId("");
@@ -108,7 +115,11 @@ const MatchRecordForm = ({ players, onMatchRecord }: MatchRecordFormProps) => {
             </Select>
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button 
+            type="submit" 
+            className="w-full"
+            disabled={!activeEventId}
+          >
             Record Match
           </Button>
         </form>
