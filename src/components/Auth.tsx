@@ -14,8 +14,8 @@ import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
+  "https://your-project-url.supabase.co",  // This will be replaced by env variable
+  "your-anon-key"  // This will be replaced by env variable
 );
 
 interface AuthProps {

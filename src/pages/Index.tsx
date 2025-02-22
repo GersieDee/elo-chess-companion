@@ -7,11 +7,12 @@ import PlayersList from "@/components/PlayersList";
 import MatchRecordForm from "@/components/MatchRecordForm";
 import EventSelector from "@/components/EventSelector";
 import Auth from "@/components/Auth";
+import { Button } from "@/components/ui/button";
 import { processMatch, type Player, type Match, type Event } from "@/utils/eloCalculator";
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
+  "https://your-project-url.supabase.co",  // This will be replaced by env variable
+  "your-anon-key"  // This will be replaced by env variable
 );
 
 const Index = () => {
